@@ -29,6 +29,10 @@ def index():
 
     # Run scoring
     E1, E2 = scoring(truth, prediction, k, modes)
-    return render_template("index.html", name="teamname", E1=E1, E2=E2)
+
+    # Read team name from file
+    with open("../team1/teamname.txt", "r") as file:
+        team1 = file.read()
+    return render_template("index.html", name=team1, E1=E1, E2=E2)
 #except:
 #    return "Error!" # TODO: Handle error
