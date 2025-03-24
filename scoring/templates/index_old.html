@@ -22,6 +22,13 @@
         <p class="score">Long-Time Score: <strong>{{ E2 }}</strong></p>
     </div>
 
+    <script>
+        // Fetch team name from /get_teamname and display it
+        fetch('/get_teamname')
+            .then(response => response.text())
+            .then(data => document.getElementById('team-name').innerText = data)
+            .catch(error => document.getElementById('team-name').innerText = "Error loading team name");
+    </script>
 
 </body>
 </html>

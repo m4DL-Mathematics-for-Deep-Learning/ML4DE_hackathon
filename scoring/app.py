@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 import os
 
@@ -12,3 +12,6 @@ TEAMNAME_FILE = os.path.join(TEAM_FOLDER, 'teamname.txt')
 @app.route('/')
 def hello_world():
     return 'Hello, World!123213'
+
+def index():
+    return render_template("index.html", E1=1.0, E2=1.0)
