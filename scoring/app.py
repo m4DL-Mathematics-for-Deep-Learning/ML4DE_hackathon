@@ -9,7 +9,7 @@ def index():
 @app.route("/get_teamname")
 def get_teamname():
     try:
-        return send_file("team1/teamname.txt", as_attachment=False)
+        return send_file("../team1/teamname.txt", as_attachment=False)
     except Exception as e:
         return str(e), 500
 
