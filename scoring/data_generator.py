@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-TEAM_FOLDER = "team1"  # Adjust if needed
+TEAM_FOLDER = "scoring/team1"  # Adjust if needed
 TRUTH_FILE = os.path.join(TEAM_FOLDER, "prediction.npy") # truth.npy
 
 # Ensure the team folder exists
