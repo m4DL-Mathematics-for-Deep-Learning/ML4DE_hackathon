@@ -22,6 +22,11 @@ def index():
     truth = np.load(TRUTH_FILE)
     prediction = np.load(PREDICTION_FILE)
 
+
+    # Parameters for scoring
+    k = 20   # Number of snapshots
+    modes = 100
+
     # Run scoring
     E1, E2 = scoring(truth, prediction, k, modes)
     return render_template("index.html", E1=5.0, E2=1.0)
