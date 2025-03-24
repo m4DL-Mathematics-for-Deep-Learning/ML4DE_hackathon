@@ -1,14 +1,31 @@
 from flask import Flask, request, jsonify, send_from_directory
 import os
+import json
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
+LEADERBOARD_FILE = 'leaderboard.json'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Initialize leaderboard file if not exists
+if not os.path.exists(LEADERBOARD_FILE):
+    with open(LEADERBOARD_FILE, 'w') as f:
+        json.dump([], f)
 
 # Dummy scoring function
 def score_file(filepath):
     return len(open(filepath).readlines())  # Example: Count lines in file
+
+# Load leaderboard
+def load_leaderboard():
+    with open(LEADERBOARD_FILE, 'r') as f:
+        return json.load(f)
+
+# Save leaderboard
+def save_leaderboard(data):
+    with open(LEADERBOARD_FILE, 'w') as f:
+        json.dump(data, f, indent=4)
 
 @app.route('/')
 def index():
@@ -29,7 +46,18 @@ def upload_file():
     # Process the file
     score = score_file(filepath)
     
+    # Update leaderboard
+    leaderboard = load_leaderboard()
+    leaderboard.append({'filename': file.filename, 'score': score})
+    leaderboard = sorted(leaderboard, key=lambda x: x['score'], reverse=True)[:10]  # Keep top 10
+    save_leaderboard(leaderboard)
+    
     return jsonify({'filename': file.filename, 'score': score})
+
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    leaderboard = load_leaderboard()
+    return jsonify(leaderboard)
 
 if __name__ == '__main__':
     from waitress import serve

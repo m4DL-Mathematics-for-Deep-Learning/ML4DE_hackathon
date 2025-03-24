@@ -43,5 +43,48 @@
         }
     </script>
 
+    <h3>Leaderboard</h3>
+    <ul id="leaderboard"></ul>
+
+    <script>
+        async function loadLeaderboard() {
+            const response = await fetch("/leaderboard");
+            const leaderboard = await response.json();
+            const list = document.getElementById("leaderboard");
+            list.innerHTML = leaderboard.map(entry => 
+                `<li>${entry.filename} - Score: ${entry.score}</li>`
+            ).join('');
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            if (!fileInput.files.length) {
+                alert("Please select a file first.");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                document.getElementById("result").innerText = 
+                    `File: ${result.filename} | Score: ${result.score}`;
+                loadLeaderboard();
+            } else {
+                document.getElementById("result").innerText = `Error: ${result.error}`;
+            }
+        }
+
+        // Load leaderboard on page load
+        loadLeaderboard();
+    </script>
+
+
 </body>
 </html>
