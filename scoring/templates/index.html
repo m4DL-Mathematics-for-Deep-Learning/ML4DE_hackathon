@@ -3,32 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scoring Results</title>
+    <title>Team Scoreboard</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; }
-        .score { font-size: 24px; font-weight: bold; margin-top: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007BFF;
+        }
     </style>
 </head>
 <body>
+    <h1>Team Scoreboard</h1>
+    
+    <div class="container">
+        <h2>Team Name</h2>
+        <p id="teamname">Loading...</p>
+    </div>
 
     <div class="container">
-        <h1>Team Name:</h1>
-        <p id="team-name">Loading...</p>
+        <h2>Short-Term Score</h2>
+        <p class="score" id="E1">Loading...</p>
+    </div>
 
-        <h1>Scoring Results</h1>
-        <p class="score">Short-Time Score: <strong>{{ E1 }}</strong></p>
-        <p class="score">Long-Time Score: <strong>{{ E2 }}</strong></p>
+    <div class="container">
+        <h2>Long-Term Score</h2>
+        <p class="score" id="E2">Loading...</p>
     </div>
 
     <script>
-        // Fetch team name from /get_teamname and display it
+        // Fetch team name
         fetch('/get_teamname')
             .then(response => response.text())
-            .then(data => document.getElementById('team-name').innerText = data)
-            .catch(error => document.getElementById('team-name').innerText = "Error loading team name");
-    </script>
+            .then(data => document.getElementById('teamname').innerText = data)
+            .catch(error => document.getElementById('teamname').innerText = "Error loading team name");
 
-</body>
-</html>
+        // Fetch and display scores
+        fetch('/get_scores')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('E1').innerText = data.E1.toFixed(2);
+                document.getElementById('E2').innerText = data.E2.toFixed(2);
+            })
+            .catch(error => {
+                document.getElementById('E1').innerText = "Error";
+                document.getElementById('E2').innerText = "Error";
+            });
+
+        // Prevent caching by appending timestamp to requests
+        setInterval(() => {
+            fetch(`/get_scores?timestamp=${new Date().getTime()}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('E1').innerText = data.E1.toFixed(2);
+                    document.getElementById('E2').innerText = data.E2.toFixed(2);
+                });
+        }, 10000);
