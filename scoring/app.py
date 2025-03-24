@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import os
 
 app = Flask(__name__)
@@ -9,6 +9,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Dummy scoring function
 def score_file(filepath):
     return len(open(filepath).readlines())  # Example: Count lines in file
+
+@app.route('/')
+def index():
+    return send_from_directory('', 'index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -30,10 +34,3 @@ def upload_file():
 if __name__ == '__main__':
     from waitress import serve
     serve(app, host='0.0.0.0', port=8080)
-
-
-from flask import send_from_directory
-
-@app.route('/')
-def index():
-    return send_from_directory('', 'index.html')
