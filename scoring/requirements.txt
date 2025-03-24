@@ -2,3 +2,4 @@ flask
 waitress
 gunicorn
 numpy
+matplotlib
