@@ -40,10 +40,12 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
+    if 'file' not in request.files or 'category' not in request.form:
+        return jsonify({'error': 'Missing file or category'}), 400
     
     file = request.files['file']
+    category = request.form['category']
+    
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     
@@ -55,11 +57,11 @@ def upload_file():
     
     # Update leaderboard
     leaderboard = load_leaderboard()
-    leaderboard.append({'filename': file.filename, 'score': score})
+    leaderboard.append({'filename': file.filename, 'score': score, 'category': category})
     leaderboard = sorted(leaderboard, key=lambda x: x['score'], reverse=True)[:10]  # Keep top 10
     save_leaderboard(leaderboard)
     
-    return jsonify({'filename': file.filename, 'score': score})
+    return jsonify({'filename': file.filename, 'score': score, 'category': category})
 
 @app.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
