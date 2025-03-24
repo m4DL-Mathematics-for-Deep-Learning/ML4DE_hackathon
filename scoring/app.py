@@ -22,7 +22,7 @@ def index():
     truth = np.load(TRUTH_FILE)
     prediction = np.load(PREDICTION_FILE)
 
-
+    print(np.random.rand(1,1))
     # Parameters for scoring
     k = 20   # Number of snapshots
     modes = 100
