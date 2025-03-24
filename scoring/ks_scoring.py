@@ -42,3 +42,11 @@ def scoring2(truth, prediction):
     E1 = 100*(1-Est)
     
     return E1
+
+
+# Load data
+truth = np.load('team1/truth.npy')
+prediction = np.load('team1/prediction.npy')
+E1, E2 = scoring(truth, prediction, k, modes)
+print(E1)
+print(E2)

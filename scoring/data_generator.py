@@ -8,7 +8,7 @@ TRUTH_FILE = os.path.join(TEAM_FOLDER, "prediction.npy") # truth.npy
 os.makedirs(TEAM_FOLDER, exist_ok=True)
 
 # Generate a random matrix as the "truth" data
-rows, cols = 100, 200  # Adjust size as needed
+rows, cols = 201, 200  # Adjust size as needed
 truth_data = np.random.rand(rows, cols)
 
 # Save to `truth.npy`
