@@ -14,17 +14,16 @@ TEAMNAME_FILE = os.path.join(TEAM_FOLDER, 'teamname.txt')
 @app.route('/')
 def index():
     """Loads truth & prediction, runs scoring, and returns results."""
-    try:
-        if not os.path.exists(TRUTH_FILE) or not os.path.exists(PREDICTION_FILE):
-            return "Missing truth or prediction file in ../team1/", 500
+    #try:
+    #    if not os.path.exists(TRUTH_FILE) or not os.path.exists(PREDICTION_FILE):
+    #        return "Missing truth or prediction file in ../team1/", 500
         
-        # Load data
-        truth = np.load(TRUTH_FILE)
-        prediction = np.load(PREDICTION_FILE)
+    # Load data
+    truth = np.load(TRUTH_FILE)
+    prediction = np.load(PREDICTION_FILE)
 
-        # Run scoring
-        E1, E2 = scoring(truth, prediction, k, modes)
-        return render_template("index.html", E1=5.0, E2=1.0)
-    
-    except:
-        return "Error!" # TODO: Handle error
+    # Run scoring
+    E1, E2 = scoring(truth, prediction, k, modes)
+    return render_template("index.html", E1=5.0, E2=1.0)
+#except:
+#    return "Error!" # TODO: Handle error
