@@ -6,7 +6,7 @@ import os
 
 
 # Define paths
-TEAM_FOLDER = '../team1/'
+TEAM_FOLDER = 'team1/'
 TRUTH_FILE = os.path.join(TEAM_FOLDER, 'truth.npy')
 PREDICTION_FILE = os.path.join(TEAM_FOLDER, 'prediction.npy')
 TEAMNAME_FILE = os.path.join(TEAM_FOLDER, 'teamname.txt')
