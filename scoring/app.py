@@ -29,7 +29,7 @@ def index():
         # Run scoring
         E1, E2 = scoring(truth, prediction, k, modes)
 
-        return send_from_directory("index.html", E1=E1, E2=E2)
+        return render_template("index.html", E1=E1, E2=E2)
 
     except Exception as e:
         return str(e), 500
