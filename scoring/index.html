@@ -48,7 +48,7 @@
         async function uploadFile() {
             const fileInput = document.getElementById("fileInput");
             const category = document.getElementById("category").value;
-            
+
             if (!fileInput.files.length) {
                 alert("Please select a file first.");
                 return;
@@ -68,7 +68,7 @@
                 if (response.ok) {
                     document.getElementById("result").innerText = 
                         `File: ${result.filename} | Score: ${result.score} | Category: ${result.category}`;
-                    loadLeaderboard();
+                    loadLeaderboard(); // Refresh leaderboard after upload
                 } else {
                     document.getElementById("result").innerText = `Error: ${result.error}`;
                 }
