@@ -11,4 +11,4 @@ TEAMNAME_FILE = os.path.join(TEAM_FOLDER, 'teamname.txt')
 
 @app.route('/')
 def index():
-    return 'Hello, World!123213',render_template("index.html", E1=1.0, E2=1.0)
+    return render_template("index.html", E1=1.0, E2=1.0)
