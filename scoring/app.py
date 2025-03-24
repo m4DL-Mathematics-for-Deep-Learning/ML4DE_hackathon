@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+import numpy as np
+from ks_scoring import scoring  #  Import scoring function
 app = Flask(__name__)
 import os
 
