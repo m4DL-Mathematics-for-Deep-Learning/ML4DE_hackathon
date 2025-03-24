@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload</title>
+    <title>File Upload & Leaderboard</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        input, button { margin-top: 10px; }
+        input, button { margin: 10px; }
+        #leaderboard { list-style-type: none; padding: 0; }
+        li { background: #f4f4f4; margin: 5px; padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -17,43 +19,21 @@
 
     <h3 id="result"></h3>
 
-    <script>
-        async function uploadFile() {
-            const fileInput = document.getElementById("fileInput");
-            if (!fileInput.files.length) {
-                alert("Please select a file first.");
-                return;
-            }
-
-            let formData = new FormData();
-            formData.append("file", fileInput.files[0]);
-
-            const response = await fetch("/upload", {
-                method: "POST",
-                body: formData
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                document.getElementById("result").innerText = 
-                    `File: ${result.filename} | Score: ${result.score}`;
-            } else {
-                document.getElementById("result").innerText = `Error: ${result.error}`;
-            }
-        }
-    </script>
-
-    <h3>Leaderboard</h3>
+    <h2>Leaderboard</h2>
     <ul id="leaderboard"></ul>
 
     <script>
         async function loadLeaderboard() {
-            const response = await fetch("/leaderboard");
-            const leaderboard = await response.json();
-            const list = document.getElementById("leaderboard");
-            list.innerHTML = leaderboard.map(entry => 
-                `<li>${entry.filename} - Score: ${entry.score}</li>`
-            ).join('');
+            try {
+                const response = await fetch("/leaderboard");
+                const leaderboard = await response.json();
+                const list = document.getElementById("leaderboard");
+                list.innerHTML = leaderboard.map(entry => 
+                    `<li><strong>${entry.filename}</strong> - Score: ${entry.score}</li>`
+                ).join('');
+            } catch (error) {
+                console.error("Error loading leaderboard:", error);
+            }
         }
 
         async function uploadFile() {
@@ -66,25 +46,28 @@
             let formData = new FormData();
             formData.append("file", fileInput.files[0]);
 
-            const response = await fetch("/upload", {
-                method: "POST",
-                body: formData
-            });
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                });
 
-            const result = await response.json();
-            if (response.ok) {
-                document.getElementById("result").innerText = 
-                    `File: ${result.filename} | Score: ${result.score}`;
-                loadLeaderboard();
-            } else {
-                document.getElementById("result").innerText = `Error: ${result.error}`;
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById("result").innerText = 
+                        `File: ${result.filename} | Score: ${result.score}`;
+                    loadLeaderboard(); // Refresh leaderboard after upload
+                } else {
+                    document.getElementById("result").innerText = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                console.error("Error uploading file:", error);
             }
         }
 
         // Load leaderboard on page load
         loadLeaderboard();
     </script>
-
 
 </body>
 </html>
