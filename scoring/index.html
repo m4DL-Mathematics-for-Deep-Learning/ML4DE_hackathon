@@ -3,83 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload & Leaderboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        input, button, select { margin: 10px; padding: 5px; }
-        #leaderboard { list-style-type: none; padding: 0; }
-        li { background: #f4f4f4; margin: 5px; padding: 10px; border-radius: 5px; }
-    </style>
+    <title>Team Name Display</title>
 </head>
 <body>
-
-    <h2>Upload Your File</h2>
-    
-    <input type="file" id="fileInput">
-    
-    <label for="category">Select Category:</label>
-    <select id="category">
-        <option value="A">Category A</option>
-        <option value="B">Category B</option>
-        <option value="C">Category C</option>
-    </select>
-
-    <button onclick="uploadFile()">Upload</button>
-
-    <h3 id="result"></h3>
-
-    <h2>Leaderboard</h2>
-    <ul id="leaderboard"></ul>
+    <h1>Team Name:</h1>
+    <p id="teamname">Loading...</p>
 
     <script>
-        async function loadLeaderboard() {
-            try {
-                const response = await fetch("/leaderboard");
-                const leaderboard = await response.json();
-                const list = document.getElementById("leaderboard");
-                list.innerHTML = leaderboard.map(entry => 
-                    `<li><strong>${entry.filename}</strong> - Score: ${entry.score} - Category: ${entry.category}</li>`
-                ).join('');
-            } catch (error) {
-                console.error("Error loading leaderboard:", error);
-            }
-        }
-
-        async function uploadFile() {
-            const fileInput = document.getElementById("fileInput");
-            const category = document.getElementById("category").value;
-
-            if (!fileInput.files.length) {
-                alert("Please select a file first.");
-                return;
-            }
-
-            let formData = new FormData();
-            formData.append("file", fileInput.files[0]);
-            formData.append("category", category);
-
-            try {
-                const response = await fetch("/upload", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const result = await response.json();
-                if (response.ok) {
-                    document.getElementById("result").innerText = 
-                        `File: ${result.filename} | Score: ${result.score} | Category: ${result.category}`;
-                    loadLeaderboard(); // Refresh leaderboard after upload
-                } else {
-                    document.getElementById("result").innerText = `Error: ${result.error}`;
-                }
-            } catch (error) {
-                console.error("Error uploading file:", error);
-            }
-        }
-
-        // Load leaderboard on page load
-        loadLeaderboard();
+        fetch("/get_teamname")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("teamname").innerText = data;
+            })
+            .catch(error => console.error("Error fetching team name:", error));
     </script>
-
 </body>
 </html>
