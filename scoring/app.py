@@ -31,7 +31,7 @@ def index():
     E1, E2 = scoring(truth, prediction, k, modes)
 
     # Read team name from file
-    with open("../team1/teamname.txt", "r") as file:
+    with open("team1/teamname.txt", "r") as file:
         team1 = file.read()
     return render_template("index.html", name=team1, E1=E1, E2=E2)
 #except:
