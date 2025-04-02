@@ -44,6 +44,20 @@ def scoring2(truth, prediction):
     return E1
 
 
+if __name__ == "__main__":
+    import os
+
+    DATA_FOLDER = "scoring/data"
+    TEAM_FOLDER = "scoring/baseline_test"
+    TRUTH_FILE = os.path.join(DATA_FOLDER, "truth.npy")
+    PREDICTION_FILE = os.path.join(TEAM_FOLDER, "prediction.npy")
+
+    truth = np.load(TRUTH_FILE)
+    prediction = np.load(PREDICTION_FILE)
+    E1, E2 = scoring(truth, prediction, k, modes)
+    print(E1)
+    print(E2)
+
 # # Load data
 # truth = np.load('team1/truth.npy')
 # prediction = np.load('team1/prediction.npy')
