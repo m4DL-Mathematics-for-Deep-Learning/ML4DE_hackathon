@@ -3,24 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scoring Results</title>
+    <title>Team Rankings</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; }
-        .score { font-size: 24px; font-weight: bold; margin-top: 10px; }
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: auto; 
+            padding: 20px; 
+            background-color: white;
+            border-radius: 10px; 
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        .medal {
+            font-size: 1.5em;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Team Name:</h1>
-        <p id="team-name">{{ name }}</p>
-        <h1>Scoring Results</h1>
-        <p class="score">Short-Time Score: <strong>{{ E1 }}</strong></p>
-        <p class="score">Long-Time Score: <strong>{{ E2 }}</strong></p>
+        <h1>KS Equation Challenge Rankings</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Short-Time Score (E1)</th>
+                    <th>Long-Time Score (E2)</th>
+                    <th>Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr>
+                    <td>
+                        {% if loop.index == 1 %}
+                        <span class="medal">🥇</span>
+                        {% elif loop.index == 2 %}
+                        <span class="medal">🥈</span>
+                        {% elif loop.index == 3 %}
+                        <span class="medal">🥉</span>
+                        {% else %}
+                        {{ loop.index }}
+                        {% endif %}
+                    </td>
+                    <td>{{ team.name }}</td>
+                    <td>{{ "%.6f"|format(team.E1) }}</td>
+                    <td>{{ "%.6f"|format(team.E2) }}</td>
+                    <td><strong>{{ "%.6f"|format(team.total) }}</strong></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <p class="timestamp">Last updated: {{ timestamp }}</p>
     </div>
-
-
 </body>
 </html>
