@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 import numpy as np
-from ks_scoring import scoring  #  Import scoring functions
+from ks_eval import scoring_ks  #  Import scoring functions
 app = Flask(__name__)
 import os
 
@@ -26,7 +26,7 @@ def get_team_scores(team_folder):
         modes = 20  # Need modes strictly less than m/2
         
         # Run scoring
-        E1, E2 = scoring(truth, prediction, k, modes)
+        E1, E2 = scoring_ks(truth, prediction, k, modes)
         
         # Read team name from file
         with open(teamname_file, "r") as file:
