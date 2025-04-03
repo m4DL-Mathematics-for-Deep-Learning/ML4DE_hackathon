@@ -22,18 +22,19 @@ def ks_pinn(params=None):
         params = {
             'L': 32,
             'N': 128,
+            'nu': 1.0,
             'dt': 0.5,
             'T': 100,
         }
     
-    L, N = params['L'], params['N']
+    L, N, nu = params['L'], params['N'], params['nu']
     dt, T = params['dt'], params['T']
     
     def pde(x, y):
         dy_x = dde.grad.jacobian(y, x, i=0, j=0)
         dy_t = dde.grad.jacobian(y, x, i=0, j=1)
         dy_xx = dde.grad.hessian(y, x, i=0, j=0)
-        return dy_t + y * dy_x - 0.01 / np.pi * model.net.nu * dy_xx
+        return dy_t + y * dy_x - 0.01 / np.pi * dy_xx
 
     space_domain = dde.geometry.Interval(0, L)  
     time_domain = dde.geometry.TimeDomain(0, T)
@@ -70,10 +71,6 @@ def ks_pinn(params=None):
     net = dde.nn.FNN([2] + [40] * 4 + [1], "tanh", "Glorot normal")  # Deeper network
     model = dde.Model(data, net)
 
-    # Create learnable parameter nu and register it with the model
-    model.net.nu = torch.nn.Parameter(torch.tensor(1.0, dtype=torch.float32))
-    model.net._parameters['nu'] = model.net.nu
-
     # Compile with weighted losses
     model.compile("adam", lr=1e-2, loss_weights=[1, 1, 1, 10])  # weights: [PDE residual, IC, BC, data]
     
@@ -88,13 +85,10 @@ def ks_pinn(params=None):
     )
     
     losshistory, train_state = model.train(
-        epochs=2000,
+        epochs=4000,
         display_every=100,
         callbacks=[checker]
     )
-    
-    # Print the learned nu value
-    print(f"Learned nu value: {model.net.nu.item()}")
 
     return model, losshistory, train_state
 
@@ -113,6 +107,7 @@ if __name__ == "__main__":
     params = {
         'L': 32,
         'N': 128,
+        'nu': 1.0,
         'dt': 0.5,
         'T': 100,
         'num_steps': 201,  # Total steps for 0 to 100

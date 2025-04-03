@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 k=20 # number of snapshots to test for short time and long time
-modes = 100
+modes = 20 # Need modes strictly less than m/2
 
 # SCORING FOR SHORT-TIME AND LONG-TIME FORECASTS
 def scoring(truth, prediction, k, modes):
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     import os
 
     DATA_FOLDER = "scoring/data"
-    TEAM_FOLDER = "scoring/baseline_test"
+    TEAM_FOLDER = "scoring/team0"
     TRUTH_FILE = os.path.join(DATA_FOLDER, "truth.npy")
     PREDICTION_FILE = os.path.join(TEAM_FOLDER, "prediction.npy")
 

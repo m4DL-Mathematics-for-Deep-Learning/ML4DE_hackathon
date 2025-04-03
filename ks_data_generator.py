@@ -80,6 +80,7 @@ def plot_solution(x, t, u):
     plt.xlabel('x')
     plt.ylabel('t')
     plt.title('Kuramoto-Sivashinsky Solution')
+    plt.savefig("ks_solution.png", dpi=300)
     plt.show(block=False)
 
 if __name__ == "__main__":
@@ -110,8 +111,8 @@ if __name__ == "__main__":
     truth_data = u[int((params['num_steps']-1)/2)+1:params['num_steps']]     # Last 101 time steps (100 to 200)
     
     # Save the training and truth data
-    TRAINING_FILE = os.path.join(DATA_FOLDER, "training.npy")
-    TRUTH_FILE = os.path.join(DATA_FOLDER, "truth.npy")
+    TRAINING_FILE = os.path.join(DATA_FOLDER, "training2.npy")
+    TRUTH_FILE = os.path.join(DATA_FOLDER, "truth2.npy")
     
     np.save(TRAINING_FILE, training_data)
     np.save(TRUTH_FILE, truth_data)
