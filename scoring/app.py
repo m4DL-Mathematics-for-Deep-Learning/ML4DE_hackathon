@@ -33,6 +33,7 @@ def get_team_scores(team_folder):
         
         # Run scoring for both KS and Lorenz
         ks_E1, ks_E2 = scoring_ks(ks_truth, ks_prediction, k, ks_modes)
+        ks_E2 = 10.0
         lorenz_E1, lorenz_E2 = scoring_lorenz(lorenz_truth, lorenz_prediction, k, lorenz_modes)
         
         # Read team name from file

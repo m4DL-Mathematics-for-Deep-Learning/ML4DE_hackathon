@@ -43,7 +43,7 @@ if __name__ == "__main__":
     import os
 
     DATA_FOLDER = "scoring/data"
-    TEAM_FOLDER = "scoring/team0"
+    TEAM_FOLDER = "scoring/team3"
     TRUTH_FILE = os.path.join(DATA_FOLDER, "lorenz_truth.npy")
     PREDICTION_FILE = os.path.join(TEAM_FOLDER, "lorenz_prediction.npy")
 
