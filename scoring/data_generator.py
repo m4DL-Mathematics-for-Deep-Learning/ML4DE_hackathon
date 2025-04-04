@@ -17,7 +17,7 @@ def save_data(team_number):
     ks_pred, lorenz_pred = generate_random_data()
     
     # Create team folder if it doesn't exist
-    team_folder = f"team{team_number}"
+    team_folder = f"scoring/team{team_number}"
     os.makedirs(team_folder, exist_ok=True)
     
     # Save predictions
