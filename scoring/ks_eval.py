@@ -30,6 +30,12 @@ def scoring_ks(truth, prediction, k, modes):
     
     E1 = 100*(1-Est)
     E2 = 100*(1-Elt)
+
+    if np.isnan(E1):
+        E1 = -np.inf
+    if np.isnan(E2):
+        E2 = -np.inf
+    
     
     return E1, E2
 
