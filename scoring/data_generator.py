@@ -15,10 +15,10 @@ def generate_random_data():
 def generate_zero_data():
     """Generate random data for both KS and Lorenz systems"""
     # KS data shape: (100, 128)
-    ks_data = np.zeros([100, 128])
+    ks_data = np.ones([100, 128])
     
     # Lorenz data shape: (5000, 3)
-    lorenz_data = np.zeros([5000, 3])
+    lorenz_data = np.ones([5000, 3])
     
     return ks_data, lorenz_data
 

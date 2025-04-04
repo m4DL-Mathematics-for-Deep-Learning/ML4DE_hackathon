@@ -30,6 +30,11 @@ def scoring(truth, prediction, k, modes):
     
     E1 = 100*(1-Est)
     E2 = 100*(1-Elt)
+
+    if np.isnan(E1):
+        E1 = -np.inf
+    if np.isnan(E2):
+        E2 = -np.inf
     
     return E1, E2
 
@@ -48,9 +53,9 @@ if __name__ == "__main__":
     import os
 
     DATA_FOLDER = "scoring/data"
-    TEAM_FOLDER = "scoring/team0"
-    TRUTH_FILE = os.path.join(DATA_FOLDER, "truth.npy")
-    PREDICTION_FILE = os.path.join(TEAM_FOLDER, "prediction.npy")
+    TEAM_FOLDER = "scoring/team3"
+    TRUTH_FILE = os.path.join(DATA_FOLDER, "ks_truth.npy")
+    PREDICTION_FILE = os.path.join(TEAM_FOLDER, "ks_prediction.npy")
 
     truth = np.load(TRUTH_FILE)
     prediction = np.load(PREDICTION_FILE)
