@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Rankings</title>
+    <title>Challenge Rankings</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -12,7 +12,7 @@
             background-color: #f5f5f5;
         }
         .container { 
-            max-width: 800px; 
+            max-width: 1200px; 
             margin: auto; 
             padding: 20px; 
             background-color: white;
@@ -50,21 +50,46 @@
             font-size: 1.5em;
             margin-right: 5px;
         }
+        .score-section {
+            background-color: #f8f9fa;
+            padding: 5px;
+            border-radius: 4px;
+            margin: 2px;
+            display: inline-block;
+        }
+        .score-label {
+            font-size: 0.8em;
+            color: #666;
+            display: block;
+        }
+        .score-value {
+            font-weight: bold;
+            color: #333;
+        }
     </style>
     <meta http-equiv="refresh" content="5">
 </head>
 <body>
     <div class="container">
-        <h1>KS Equation Challenge Rankings</h1>
+        <h1>Mathematics for Deep Learning Challenge Rankings</h1>
         
         <table>
             <thead>
                 <tr>
                     <th>Rank</th>
                     <th>Team</th>
-                    <th>Short-Time Score (E1)</th>
-                    <th>Long-Time Score (E2)</th>
+                    <th colspan="2">Kuramoto-Sivashinsky</th>
+                    <th colspan="2">Lorenz</th>
                     <th>Total Score</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Short-Time</th>
+                    <th>Long-Time</th>
+                    <th>Short-Time</th>
+                    <th>Long-Time</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -82,9 +107,11 @@
                         {% endif %}
                     </td>
                     <td>{{ team.name }}</td>
-                    <td>{{ "%.6f"|format(team.E1) }}</td>
-                    <td>{{ "%.6f"|format(team.E2) }}</td>
-                    <td><strong>{{ "%.6f"|format(team.total) }}</strong></td>
+                    <td>{{ "%.2f"|format(team.ks_E1) }}</td>
+                    <td>{{ "%.2f"|format(team.ks_E2) }}</td>
+                    <td>{{ "%.2f"|format(team.lorenz_E1) }}</td>
+                    <td>{{ "%.2f"|format(team.lorenz_E2) }}</td>
+                    <td><strong>{{ "%.2f"|format(team.total) }}</strong></td>
                 </tr>
                 {% endfor %}
             </tbody>

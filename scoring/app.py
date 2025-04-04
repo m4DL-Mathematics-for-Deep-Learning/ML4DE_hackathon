@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import numpy as np
-from ks_eval import scoring_ks  #  Import scoring functions
+from ks_eval import scoring_ks  #  Import KS scoring functions
+from lorenz_eval import scoring_lorenz  # Import Lorenz scoring functions
 app = Flask(__name__)
 import os
 
@@ -9,24 +10,30 @@ def get_team_scores(team_folder):
     """Get scores for a single team"""
     try:
         # Define paths for this team
-        truth_file = os.path.join('data', 'truth.npy')
-        prediction_file = os.path.join(team_folder, 'prediction.npy')
+        ks_truth_file = os.path.join('data', 'truth.npy')
+        ks_prediction_file = os.path.join(team_folder, 'prediction.npy')
+        lorenz_truth_file = os.path.join('data', 'lorenz_truth.npy')
+        lorenz_prediction_file = os.path.join(team_folder, 'lorenz_prediction.npy')
         teamname_file = os.path.join(team_folder, 'teamname.txt')
         
-        # Skip if prediction doesn't exist
-        if not os.path.exists(prediction_file):
+        # Skip if predictions don't exist
+        if not os.path.exists(ks_prediction_file) or not os.path.exists(lorenz_prediction_file):
             return None
             
         # Load data
-        truth = np.load(truth_file)
-        prediction = np.load(prediction_file)
+        ks_truth = np.load(ks_truth_file)
+        ks_prediction = np.load(ks_prediction_file)
+        lorenz_truth = np.load(lorenz_truth_file)
+        lorenz_prediction = np.load(lorenz_prediction_file)
         
         # Parameters for scoring
         k = 20   # Number of snapshots
-        modes = 20  # Need modes strictly less than m/2
+        ks_modes = 20  # Need modes strictly less than m/2 for KS
+        lorenz_modes = 1000  # For Lorenz
         
-        # Run scoring
-        E1, E2 = scoring_ks(truth, prediction, k, modes)
+        # Run scoring for both KS and Lorenz
+        ks_E1, ks_E2 = scoring_ks(ks_truth, ks_prediction, k, ks_modes)
+        lorenz_E1, lorenz_E2 = scoring_lorenz(lorenz_truth, lorenz_prediction, k, lorenz_modes)
         
         # Read team name from file
         with open(teamname_file, "r") as file:
@@ -35,9 +42,11 @@ def get_team_scores(team_folder):
         return {
             'name': team_name,
             'folder': team_folder,
-            'E1': E1,
-            'E2': E2,
-            'total': E1 + E2  # Combined score for ranking
+            'ks_E1': ks_E1,
+            'ks_E2': ks_E2,
+            'lorenz_E1': lorenz_E1,
+            'lorenz_E2': lorenz_E2,
+            'total': ks_E1 + ks_E2 + lorenz_E1 + lorenz_E2  # Combined score for ranking
         }
     except Exception as e:
         print(f"Error processing team {team_folder}: {str(e)}")
@@ -56,8 +65,8 @@ def index():
         if scores:
             team_scores.append(scores)
     
-    # Sort teams by total score (lower is better)
-    team_scores.sort(key=lambda x: x['total'])
+    # Sort teams by total score (higher is better)
+    team_scores.sort(key=lambda x: x['total'], reverse=True)
     
     return render_template(
         "index.html",
