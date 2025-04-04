@@ -18,15 +18,8 @@ def generate_ks_data(params=None):
     Returns:
         tuple: (x, t, u) where u contains the solution values
     """
-    # Default parameters if none provided
     if params is None:
-        params = {
-            'L': 32,
-            'N': 4,
-            'nu': 1.0,
-            'dt': 0.5,
-            'T': 10,
-        }
+        raise ValueError("Parameters must be provided")
     
     L, N, nu = params['L'], params['N'], params['nu']
     dt, T = params['dt'], params['T']

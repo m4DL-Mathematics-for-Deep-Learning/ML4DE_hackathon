@@ -18,15 +18,8 @@ def generate_lorenz_data(params=None):
     Returns:
         tuple: (t, xyz) where xyz contains the solution values for x, y, z coordinates
     """
-    # Default parameters if none provided
     if params is None:
-        params = {
-            'sigma': 10.0,
-            'rho': 28.0,
-            'beta': 8/3,
-            'dt': 0.01,
-            'T': 100,
-        }
+        raise ValueError("Parameters must be provided")
     
     sigma, rho, beta = params['sigma'], params['rho'], params['beta']
     dt, T = params['dt'], params['T']
