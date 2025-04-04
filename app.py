@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import numpy as np
-from ks_eval import scoring_ks  #  Import KS scoring functions
-from lorenz_eval import scoring_lorenz  # Import Lorenz scoring functions
+from aux.ks_eval import scoring_ks  #  Import KS scoring functions
+from aux.lorenz_eval import scoring_lorenz  # Import Lorenz scoring functions
 app = Flask(__name__)
 import os
 
