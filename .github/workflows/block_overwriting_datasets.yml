@@ -1,0 +1,30 @@
+name: Block forbidden file changes on push
+
+on:
+  push:
+    branches:
+      - main  # or your target branch
+    paths:
+      - '**'  # check all changed files
+
+jobs:
+  check-forbidden-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Filter paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            forbidden-files:
+              - 'team_entries/team0/teamname.txt'   # Add more paths if needed
+
+      - name: Block push if forbidden files are changed
+        if: steps.filter.outputs.forbidden-files == 'true'
+        run: |
+          echo "❌ Push blocked: forbidden file(s) were modified!"
+          exit 1
