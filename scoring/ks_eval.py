@@ -39,11 +39,11 @@ if __name__ == "__main__":
 
     DATA_FOLDER = "scoring/data"
     TEAM_FOLDER = "scoring/team0"
-    TRUTH_FILE = os.path.join(DATA_FOLDER, "truth.npy")
-    PREDICTION_FILE = os.path.join(TEAM_FOLDER, "prediction.npy")
+    TRUTH_FILE = os.path.join(DATA_FOLDER, "ks_truth.npy")
+    PREDICTION_FILE = os.path.join(TEAM_FOLDER, "ks_prediction.npy")
 
     truth = np.load(TRUTH_FILE)
     prediction = np.load(PREDICTION_FILE)
-    E1, E2 = scoring(truth, prediction, k, modes)
+    E1, E2 = scoring_ks(truth, prediction, k, modes)
     print(E1)
     print(E2)
