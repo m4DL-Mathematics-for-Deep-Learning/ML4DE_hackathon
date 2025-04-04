@@ -95,6 +95,7 @@ if __name__ == "__main__":
     params = {
         'T': 10,
         'dt': 0.01,
+        'num_steps': 10001  # Total steps for 0 to 100
     }
     
     # Create and train model
@@ -105,14 +106,14 @@ if __name__ == "__main__":
     #dde.saveplot(losshistory, train_state, issave=True, isplot=True)
     
     # Generate prediction points
-    t_pred = np.linspace(0, params['T'], 1000)
+    t_pred = np.linspace(0, params['T'], params['num_steps'])
     y_pred = model.predict(t_pred[5001:10001, None])
     
     # Plot the predicted solution
     plot_solution(t_pred, y_pred)
     
     # Save the prediction
-    TEAM_FOLDER = "scoring/team0"
+    TEAM_FOLDER = "scoring/team3"
     os.makedirs(TEAM_FOLDER, exist_ok=True)
     
     PREDICTION_FILE = os.path.join(TEAM_FOLDER, "lorenz_prediction.npy")
