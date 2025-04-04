@@ -10,8 +10,8 @@ def get_team_scores(team_folder):
     """Get scores for a single team"""
     try:
         # Define paths for this team
-        ks_truth_file = os.path.join('data', 'truth.npy')
-        ks_prediction_file = os.path.join(team_folder, 'prediction.npy')
+        ks_truth_file = os.path.join('data', 'ks_truth.npy')
+        ks_prediction_file = os.path.join(team_folder, 'ks_prediction.npy')
         lorenz_truth_file = os.path.join('data', 'lorenz_truth.npy')
         lorenz_prediction_file = os.path.join(team_folder, 'lorenz_prediction.npy')
         teamname_file = os.path.join(team_folder, 'teamname.txt')
