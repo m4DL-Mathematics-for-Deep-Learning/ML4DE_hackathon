@@ -96,7 +96,7 @@ if __name__ == "__main__":
     plot_solution(t, xyz)
     
     # Save in the required format and location
-    DATA_FOLDER = "scoring/data"
+    DATA_FOLDER = "data"
     os.makedirs(DATA_FOLDER, exist_ok=True)
     
     # Split data into training (0-5000) and truth (5001-10001)

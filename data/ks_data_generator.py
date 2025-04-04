@@ -103,7 +103,7 @@ if __name__ == "__main__":
     plot_solution(x, t, u)
     
     # Save in the required format and location
-    DATA_FOLDER = "scoring/data"
+    DATA_FOLDER = "data"
     os.makedirs(DATA_FOLDER, exist_ok=True)
     
     # Split data into training (0-100) and truth (101-201)
@@ -111,8 +111,8 @@ if __name__ == "__main__":
     truth_data = u[int((params['num_steps']-1)/2)+1:params['num_steps']]     # Last 101 time steps (100 to 200)
     
     # Save the training and truth data
-    TRAINING_FILE = os.path.join(DATA_FOLDER, "training2.npy")
-    TRUTH_FILE = os.path.join(DATA_FOLDER, "truth2.npy")
+    TRAINING_FILE = os.path.join(DATA_FOLDER, "training.npy")
+    TRUTH_FILE = os.path.join(DATA_FOLDER, "truth.npy")
     
     np.save(TRAINING_FILE, training_data)
     np.save(TRUTH_FILE, truth_data)

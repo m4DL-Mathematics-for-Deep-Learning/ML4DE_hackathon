@@ -1,3 +1,5 @@
+""" This file is auxiliary and allos the generation of random and zero prediction placeholder date for both systems"""
+
 import numpy as np
 import os
 
@@ -13,7 +15,7 @@ def generate_random_data():
 
 
 def generate_zero_data():
-    """Generate random data for both KS and Lorenz systems"""
+    """Generate zero data for both KS and Lorenz systems"""
     # KS data shape: (100, 128)
     ks_data = np.ones([100, 128])
     
@@ -23,8 +25,8 @@ def generate_zero_data():
     return ks_data, lorenz_data
 
 def save_data(team_number):
-    """Save random predictions for a team"""
-    # Generate random data
+    """Save random/zero predictions for a team"""
+    # Generate random/zero data
     ks_pred, lorenz_pred = generate_zero_data()
     
     # Create team folder if it doesn't exist
@@ -49,5 +51,5 @@ def save_data(team_number):
     print(f"Lorenz prediction shape: {lorenz_pred.shape}")
 
 if __name__ == "__main__":
-    # Generate data for teams 0-4
+    # Generate data for specified team
     save_data(3)
