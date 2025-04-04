@@ -2,6 +2,7 @@ import deepxde as dde
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import torch
 
 def load_training_data():
     """Load and process training data"""
@@ -14,7 +15,7 @@ def load_training_data():
     return X_train, y_train
 
 def ode_system(x, y):
-    """Lorenz system ODEs:
+    """Lorenz system ODEs with learnable parameters:
     dx/dt = sigma * (y - x)
     dy/dt = x * (rho - z) - y
     dz/dt = x * y - beta * z
@@ -27,10 +28,10 @@ def ode_system(x, y):
     dy_t = dde.grad.jacobian(y, x, i=1)
     dz_t = dde.grad.jacobian(y, x, i=2)
     
-    # Parameters
-    sigma = 10.0
-    rho = 28.0
-    beta = 8.0/3.0
+    # Use learnable parameters from the model
+    sigma = model.net.sigma
+    rho = model.net.rho
+    beta = model.net.beta
     
     # Lorenz equations
     return [
@@ -81,7 +82,16 @@ def lorenz_pinn(params=None):
     initializer = "Glorot uniform"
     net = dde.nn.FNN(layer_size, activation, initializer)
 
+    global model  # Make model accessible to ode_system
     model = dde.Model(data, net)
+
+    # Create learnable parameters and register them with the model
+    model.net.sigma = torch.nn.Parameter(torch.tensor(10.0, dtype=torch.float32))
+    model.net.rho = torch.nn.Parameter(torch.tensor(28.0, dtype=torch.float32))
+    model.net.beta = torch.nn.Parameter(torch.tensor(8.0/3.0, dtype=torch.float32))
+    model.net._parameters['sigma'] = model.net.sigma
+    model.net._parameters['rho'] = model.net.rho
+    model.net._parameters['beta'] = model.net.beta
     
     # Create model directory for checkpoints
     os.makedirs("model", exist_ok=True)
@@ -110,13 +120,19 @@ if __name__ == "__main__":
         display_every=300
     )
     
+    # Print learned parameters
+    print(f"\nLearned parameters:")
+    print(f"sigma: {model.net.sigma.item():.3f}")
+    print(f"rho: {model.net.rho.item():.3f}")
+    print(f"beta: {model.net.beta.item():.3f}")
+    
     # Predict solution
     t = np.linspace(0, 100, 5000)
     solution = model.predict(t[:, None])  # Add singleton dimension for time
 
     # Save prediction
     np.save("scoring/team3/lorenz_prediction.npy", solution)
-    print("Saved prediction to: scoring/team3/lorenz_prediction.npy")
+    print("\nSaved prediction to: scoring/team3/lorenz_prediction.npy")
     print("Prediction shape:", solution.shape)
 
     # Plot the results
@@ -126,7 +142,7 @@ if __name__ == "__main__":
     
     # Load and plot training data
     _, y_train = load_training_data()
-    ax.plot3D(y_train[:, 0], y_train[:, 1], y_train[:, 2], 'red', linestyle='dashed', label='Data')
+    ax.plot3D(y_train[:, 0], y_train[:, 1], y_train[:, 2], color='red', linestyle='dashed', label='Data')
     
     ax.set_xlabel('x')
     ax.set_ylabel('y')
