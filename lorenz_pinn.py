@@ -1,9 +1,17 @@
 import deepxde as dde
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import os
 
+def load_training_data():
+    """Load and process training data"""
+    xyz_data = np.load("scoring/data/lorenz_training.npy")
+    # Create time points (assuming uniform sampling from 0 to T/2)
+    t = np.linspace(0, 50, xyz_data.shape[0])[:, None]  # First half of time domain
+    # Stack time and xyz data for observations
+    X_train = t
+    y_train = xyz_data
+    return X_train, y_train
 
 def ode_system(x, y):
     """Lorenz system ODEs:
@@ -31,44 +39,44 @@ def ode_system(x, y):
         dz_t - (x_coord * y_coord - beta * z_coord)
     ]
 
-
 def boundary(_, on_initial):
     return on_initial
-
-
-def func(x):
-    """Solution to test against"""
-    return np.hstack((np.sin(x), np.cos(x), np.zeros_like(x)))
-
-
-def plot_solution(t, xyz):
-    """Plot the Lorenz attractor solution"""
-    fig = plt.figure(figsize=(10, 10))
-    ax = fig.add_subplot(111, projection='3d')
-    ax.plot(xyz[:, 0], xyz[:, 1], xyz[:, 2])
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('z')
-    ax.set_title('Lorenz Attractor')
-    plt.savefig("lorenz_solution_pinn.png", dpi=300)
-    plt.show(block=False)
-
 
 def lorenz_pinn(params=None):
     if params is None:
         params = {
-            'T': 10,
+            'T': 100,
             'dt': 0.01,
         }
     
+    # Create the domain
     geom = dde.geometry.TimeDomain(0, params['T'])
-    ic1 = dde.icbc.IC(geom, lambda x: 0, boundary, component=0)
-    ic2 = dde.icbc.IC(geom, lambda x: 1, boundary, component=1)
-    ic3 = dde.icbc.IC(geom, lambda x: 1, boundary, component=2)
+    
+    # Load training data
+    X_train, y_train = load_training_data()
+    
+    # Set initial conditions from first data point
+    ic1 = dde.IC(geom, lambda X: y_train[0, 0], boundary, component=0)
+    ic2 = dde.IC(geom, lambda X: y_train[0, 1], boundary, component=1)
+    ic3 = dde.IC(geom, lambda X: y_train[0, 2], boundary, component=2)
+    
+    # Create observation for each component separately
+    observe_x = dde.PointSetBC(X_train, y_train[:, 0:1], component=0)
+    observe_y = dde.PointSetBC(X_train, y_train[:, 1:2], component=1)
+    observe_z = dde.PointSetBC(X_train, y_train[:, 2:3], component=2)
+    
+    # Create the PDE problem with both physics and data
+    data = dde.data.PDE(
+        geom,
+        ode_system,
+        [ic1, ic2, ic3, observe_x, observe_y, observe_z],
+        num_domain=300,
+        num_boundary=2,
+        anchors=X_train,
+        num_test=3
+    )
 
-    data = dde.data.PDE(geom, ode_system, [ic1, ic2, ic3], 35, 3, solution=func, num_test=100)
-
-    layer_size = [1] + [50] * 3 + [3]
+    layer_size = [1] + [50] * 4 + [3]
     activation = "tanh"
     initializer = "Glorot uniform"
     net = dde.nn.FNN(layer_size, activation, initializer)
@@ -85,41 +93,43 @@ def lorenz_pinn(params=None):
         period=1000
     )
 
-    model.compile("adam", lr=0.001, metrics=["l2 relative error"])
+    # Compile with weighted losses - weights for [3 ODEs, 3 ICs, 3 observations]
+    model.compile("adam", lr=0.005, loss_weights=[1, 1, 1, 0, 0, 0, 10, 10, 10])
     
     return model, checker
 
 
 if __name__ == "__main__":
-    # Set parameters
-    params = {
-        'T': 10,
-        'dt': 0.01,
-        'num_steps': 10001  # Total steps for 0 to 100
-    }
-    
     # Create and train model
-    model, checker = lorenz_pinn(params)
-    losshistory, train_state = model.train(iterations=20000, callbacks=[checker])
+    model, checker = lorenz_pinn()
     
-    # Plot training history
-    #dde.saveplot(losshistory, train_state, issave=True, isplot=True)
+    # Train with display_every to monitor progress
+    losshistory, train_state = model.train(
+        iterations=3000,
+        callbacks=[checker],
+        display_every=300
+    )
     
-    # Generate prediction points
-    t_pred = np.linspace(0, params['T'], params['num_steps'])
-    y_pred = model.predict(t_pred[5001:10001, None])
+    # Predict solution
+    t = np.linspace(0, 100, 5000)
+    solution = model.predict(t[:, None])  # Add singleton dimension for time
+
+    # Save prediction
+    np.save("scoring/team3/lorenz_prediction.npy", solution)
+    print("Saved prediction to: scoring/team3/lorenz_prediction.npy")
+    print("Prediction shape:", solution.shape)
+
+    # Plot the results
+    plt.figure(figsize=(10, 8))
+    ax = plt.axes(projection='3d')
+    ax.plot3D(solution[:, 0], solution[:, 1], solution[:, 2], 'blue', label='PINN')
     
-    # Plot the predicted solution
-    plot_solution(t_pred, y_pred)
+    # Load and plot training data
+    _, y_train = load_training_data()
+    ax.plot3D(y_train[:, 0], y_train[:, 1], y_train[:, 2], 'red', linestyle='dashed', label='Data')
     
-    # Save the prediction
-    TEAM_FOLDER = "scoring/team3"
-    os.makedirs(TEAM_FOLDER, exist_ok=True)
-    
-    PREDICTION_FILE = os.path.join(TEAM_FOLDER, "lorenz_prediction.npy")
-    np.save(PREDICTION_FILE, y_pred)
-    
-    print(f"Saved prediction to: {PREDICTION_FILE}")
-    print(f"Prediction shape: {y_pred.shape}")
-    
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z')
+    ax.legend()
     plt.show()

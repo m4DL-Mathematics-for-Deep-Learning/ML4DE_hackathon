@@ -104,8 +104,8 @@ if __name__ == "__main__":
     truth_data = xyz[5001:10001]  # Last 5000 time steps (50 to 100)
     
     # Save the training and truth data
-    TRAINING_FILE = os.path.join(DATA_FOLDER, "lorenz_training2.npy")
-    TRUTH_FILE = os.path.join(DATA_FOLDER, "lorenz_truth2.npy")
+    TRAINING_FILE = os.path.join(DATA_FOLDER, "lorenz_training.npy")
+    TRUTH_FILE = os.path.join(DATA_FOLDER, "lorenz_truth.npy")
     
     np.save(TRAINING_FILE, training_data)
     np.save(TRUTH_FILE, truth_data)
