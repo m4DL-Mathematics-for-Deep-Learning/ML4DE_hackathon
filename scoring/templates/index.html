@@ -8,13 +8,14 @@
         body { 
             font-family: Arial, sans-serif; 
             text-align: center; 
-            padding: 20px; 
+            padding: 10px; 
             background-color: #f5f5f5;
+            margin: 0;
         }
         .container { 
             max-width: 1200px; 
             margin: auto; 
-            padding: 20px; 
+            padding: 15px; 
             background-color: white;
             border-radius: 10px; 
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
@@ -22,21 +23,40 @@
         h1 { 
             color: #333;
             margin-bottom: 30px;
+            font-size: calc(1.2rem + 1vw);
+            padding: 0 10px;
+        }
+        .logo {
+            max-width: min(300px, 80vw);
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: auto;
             background-color: white;
+            min-width: 600px; /* Ensures table doesn't get too squished */
         }
         th, td {
-            padding: 12px;
+            padding: 12px 8px;
             text-align: center;
             border-bottom: 1px solid #ddd;
+            white-space: nowrap;
         }
         th {
             background-color: #f8f9fa;
             font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
         tr:hover {
             background-color: #f5f5f5;
@@ -50,73 +70,104 @@
             font-size: 1.5em;
             margin-right: 5px;
         }
-        .score-section {
-            background-color: #f8f9fa;
-            padding: 5px;
-            border-radius: 4px;
-            margin: 2px;
-            display: inline-block;
-        }
-        .score-label {
-            font-size: 0.8em;
-            color: #666;
-            display: block;
-        }
         .score-value {
             font-weight: bold;
             color: #333;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px 5px;
+                border-radius: 0;
+            }
+            th, td {
+                padding: 8px 4px;
+                font-size: 0.9em;
+            }
+            .medal {
+                font-size: 1.2em;
+            }
+            .timestamp {
+                font-size: 0.8em;
+            }
+        }
+        
+        /* Add horizontal scroll indicator */
+        .scroll-indicator {
+            display: none;
+            text-align: center;
+            color: #666;
+            font-size: 0.8em;
+            margin: 10px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .scroll-indicator {
+                display: block;
+            }
         }
     </style>
     <meta http-equiv="refresh" content="30">
 </head>
 <body>
     <div class="container">
-        
+        <img src="{{ url_for('static', filename='Maths4DL_logo.png') }}" alt="Maths4DL Logo" class="logo">
         <h1>Challenge 1 Rankings</h1>
-        <img src="{{ url_for('static', filename='Maths4DL_logo.png') }}" alt="Maths4DL Logo" style="max-width: 300px; margin-bottom: 20px;">
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Team</th>
-                    <th colspan="2">Kuramoto-Sivashinsky</th>
-                    <th colspan="2">Lorenz</th>
-                    <th>Total Score</th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th>Short-Time</th>
-                    <th>Long-Time</th>
-                    <th>Short-Time</th>
-                    <th>Long-Time</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for team in teams %}
-                <tr>
-                    <td>
-                        {% if loop.index == 1 %}
-                        <span class="medal">🥇</span>
-                        {% elif loop.index == 2 %}
-                        <span class="medal">🥈</span>
-                        {% elif loop.index == 3 %}
-                        <span class="medal">🥉</span>
-                        {% else %}
-                        {{ loop.index }}
-                        {% endif %}
-                    </td>
-                    <td>{{ team.name }}</td>
-                    <td>{{ "%.2f"|format(team.ks_E1) }}</td>
-                    <td>{{ "%.2f"|format(team.ks_E2) }}</td>
-                    <td>{{ "%.2f"|format(team.lorenz_E1) }}</td>
-                    <td>{{ "%.2f"|format(team.lorenz_E2) }}</td>
-                    <td><strong>{{ "%.2f"|format(team.total) }}</strong></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        
+        <div class="scroll-indicator">← Scroll horizontally to see more →</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th colspan="2">Kuramoto-Sivashinsky</th>
+                        <th colspan="2">Lorenz</th>
+                        <th>Total Score</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Short-Time</th>
+                        <th>Long-Time</th>
+                        <th>Short-Time</th>
+                        <th>Long-Time</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    <tr>
+                        <td>
+                            {% if loop.index == 1 %}
+                            <span class="medal">🥇</span>
+                            {% elif loop.index == 2 %}
+                            <span class="medal">🥈</span>
+                            {% elif loop.index == 3 %}
+                            <span class="medal">🥉</span>
+                            {% else %}
+                            {{ loop.index }}
+                            {% endif %}
+                        </td>
+                        <td>{{ team.name }}</td>
+                        <td>{{ "%.2f"|format(team.ks_E1) }}</td>
+                        <td>{{ "%.2f"|format(team.ks_E2) }}</td>
+                        <td>{{ "%.2f"|format(team.lorenz_E1) }}</td>
+                        <td>{{ "%.2f"|format(team.lorenz_E2) }}</td>
+                        <td><strong>{{ "%.2f"|format(team.total) }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         
         <p class="timestamp">Last updated: {{ timestamp }}</p>
     </div>

@@ -11,10 +11,21 @@ def generate_random_data():
     
     return ks_data, lorenz_data
 
+
+def generate_zero_data():
+    """Generate random data for both KS and Lorenz systems"""
+    # KS data shape: (100, 128)
+    ks_data = np.zeros([100, 128])
+    
+    # Lorenz data shape: (5000, 3)
+    lorenz_data = np.zeros([5000, 3])
+    
+    return ks_data, lorenz_data
+
 def save_data(team_number):
     """Save random predictions for a team"""
     # Generate random data
-    ks_pred, lorenz_pred = generate_random_data()
+    ks_pred, lorenz_pred = generate_zero_data()
     
     # Create team folder if it doesn't exist
     team_folder = f"scoring/team{team_number}"
@@ -39,4 +50,4 @@ def save_data(team_number):
 
 if __name__ == "__main__":
     # Generate data for teams 0-4
-    save_data(2)
+    save_data(3)
