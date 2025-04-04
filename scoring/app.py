@@ -71,5 +71,5 @@ def index():
     return render_template(
         "index.html",
         teams=team_scores,
-        timestamp=np.datetime64('now')
+        timestamp=np.datetime64('now') + np.timedelta64(1, 'h')
     )
