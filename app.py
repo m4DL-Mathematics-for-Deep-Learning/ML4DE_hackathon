@@ -56,7 +56,7 @@ def get_team_scores(team_folder):
 def index():
     """Load all team results and display ranking"""
     # Find all team folders
-    team_folders = [d for d in os.listdir('.') if d.startswith('team') and os.path.isdir(d)]
+    team_folders = [d for d in os.listdir('./team_entries') if d.startswith('team') and os.path.isdir(d)]
     
     # Get scores for each team
     team_scores = []
