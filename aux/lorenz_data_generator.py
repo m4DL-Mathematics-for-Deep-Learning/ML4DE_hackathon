@@ -74,9 +74,9 @@ if __name__ == "__main__":
 
     # Set up parameters for Lorenz system
     params = {
-        'sigma': 10.0,
-        'rho': 28.0,
-        'beta': 8/3,
+        'sigma': 11.2,
+        'rho': 29.5,
+        'beta': 9/5,
         'dt': 0.01,
         'T': 100,
         'num_steps': 10001  # Total steps for 0 to 100

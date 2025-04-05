@@ -83,7 +83,7 @@ if __name__ == "__main__":
     params = {
         'L': 32,
         'N': 128,
-        'nu': 1.0,
+        'nu': 1.34,
         'dt': 0.5,
         'T': 100,
         'num_steps': 201  # Total steps for 0 to 100

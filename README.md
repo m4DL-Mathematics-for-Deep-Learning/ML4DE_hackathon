@@ -22,7 +22,7 @@ The website will automatically update as teams submit their predictions.
 
 ## Team Folder Structure
 
-While during the competition itself the important files are only the following:
+During the competition itself the important files are only the following:
 
 ```
 team_entries/teamX/
@@ -30,7 +30,7 @@ team_entries/teamX/
 └── lorenz_prediction.npy
 ```
 
-At the end of the day, the top 3 teams are asked to submit their models for cross-checking to ensure the scores were obtained with valid ML approaches. For this we ask that throughout the competition you are mindful that you will have to submit a structure of the following form:
+However, at the end of the day, all teams are asked to submit their models for cross-checking to ensure the scores were obtained with valid ML approaches. For this we ask that throughout the competition you are mindful that you will have to submit a structure of the following form:
 
 ```
 team_entries/teamX/
@@ -49,10 +49,11 @@ The model files should allow the competition administrator to run your model (wi
 ## Important Notes
 
 1. Only modify files within your team's folder (`team_entries/teamX`). Please DO NOT modify any other files on the repository! Any team pushing a change to a file outside their team folder will be immediately disqualified (1 grace strike for accidental commits applies).
-2. Ensure your prediction files have the correct names and are placed in the right directories
-3. The evaluation system will automatically load your predictions and calculate scores
-4. Scores are updated in real-time on the website
-5. Challenge details can be found at `challenge1_instructions.pdf`.
+2. To avoid overcrowding the git with multiple commits we ask that teams only use their folders for submitting predictions and their final model.
+3. Ensure your prediction files have the correct names and are placed in the right directories.
+4. The evaluation system will automatically load your predictions and calculate scores.
+5. Scores are updated in real-time on the website.
+6. Challenge details can be found at `challenge1_instructions.pdf`.
 
 ## Getting Started
 
