@@ -120,8 +120,8 @@
 <body>
     <div class="container">
         <img src="{{ url_for('static', filename='Maths4DL_logo.png') }}" alt="Maths4DL Logo" class="logo">
-        <h1>Challenge 1 Rankings {% if my_list and my_list|length > 0 %}
-            {{ my_list[0] }}
+        <h1>Challenge 1 Rankings {% if teams and teams|length > 0 %}
+            {{ teams[0] }}
         {% else %}
             No items found.
         {% endif %}</h1>
