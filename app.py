@@ -18,7 +18,6 @@ def get_team_scores(team_folder):
         
         # Skip if predictions don't exist
         if not os.path.exists(ks_prediction_file) or not os.path.exists(lorenz_prediction_file):
-            print(f"Missing predictions for team {team_folder}")
             return None
             
         # Load data
@@ -26,6 +25,8 @@ def get_team_scores(team_folder):
         ks_prediction = np.load(ks_prediction_file)
         lorenz_truth = np.load(lorenz_truth_file)
         lorenz_prediction = np.load(lorenz_prediction_file)
+
+        print(ks_truth)
         
         # Parameters for scoring
         k = 20   # Number of snapshots
