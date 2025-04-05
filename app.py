@@ -18,6 +18,7 @@ def get_team_scores(team_folder):
         
         # Skip if predictions don't exist
         if not os.path.exists(ks_prediction_file) or not os.path.exists(lorenz_prediction_file):
+            print(f"Missing predictions for team {team_folder}")
             return None
             
         # Load data
