@@ -120,7 +120,11 @@
 <body>
     <div class="container">
         <img src="{{ url_for('static', filename='Maths4DL_logo.png') }}" alt="Maths4DL Logo" class="logo">
-        <h1>Challenge 1 Rankings {{ teams[0]['ks_E1'] }}</h1>
+        <h1>Challenge 1 Rankings {% if my_list and my_list|length > 0 %}
+            {{ my_list[0] }}
+        {% else %}
+            No items found.
+        {% endif %}</h1>
         
         <div class="scroll-indicator">← Scroll horizontally to see more →</div>
         <div class="table-container">
