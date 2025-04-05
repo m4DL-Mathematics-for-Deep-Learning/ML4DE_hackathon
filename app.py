@@ -60,8 +60,6 @@ def index():
     # Find all team folders
     team_folders = [d for d in os.listdir('./team_entries') if d.startswith('team') and os.path.isdir(d)]
 
-    print(team_folders)
-
     # Get scores for each team
     team_scores = []
     for folder in team_folders:
@@ -75,5 +73,6 @@ def index():
     return render_template(
         "index.html",
         teams=team_scores,
+        a="1",
         timestamp=np.datetime64('now') + np.timedelta64(1, 'h')
     )
