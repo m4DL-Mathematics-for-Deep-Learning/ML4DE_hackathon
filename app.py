@@ -26,8 +26,6 @@ def get_team_scores(team_folder):
         lorenz_truth = np.load(lorenz_truth_file)
         lorenz_prediction = np.load(lorenz_prediction_file)
 
-        print(ks_truth)
-        
         # Parameters for scoring
         k = 20   # Number of snapshots
         ks_modes = 20  # Need modes strictly less than m/2 for KS
