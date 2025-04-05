@@ -34,6 +34,8 @@ At the end of the day, the top 3 teams are asked to submit their models for cros
 
 ```
 team_entries/teamX/
+├── ks_prediction.npy
+├── lorenz_prediction.npy
 ├── ks_model/
 │   ├── model files
 │   └── requirements.txt
