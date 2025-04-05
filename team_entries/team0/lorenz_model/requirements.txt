@@ -1,3 +1,4 @@
 deepxde
+torch
 numpy
 matplotlib
