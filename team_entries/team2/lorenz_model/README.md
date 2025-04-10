@@ -1,10 +1,11 @@
-# Instructions for Lorenz Problem at the ML4DE Hackathon
+# Lorenz Problem at the ML4DE Hackathon
 
 ### 1. Setup
-move into the hierarchical shallow piecewise-linear RNN folder
+Move into the hierarchical shallow piecewise-linear RNN folder
 ```bash
 cd hier-shPLRNN
 ```
+Setup a Python environment following the `requirements.txt`
 
 ### 2. Data
 Augment and prepare the data by using aux functions from ML4DE (see `lorenz_data_generator.py`), the place them into the `data` folder.
@@ -23,7 +24,7 @@ python main_eval.py --model_path='./trained_models/experiment/test/001'
 ```
 
 ### 3. Submit
-Run the following script to prepare predictions for submission tot he leaderboard
+Run the following command to prepare predictions for submission to the leaderboard
 ```bash
 python submit_leaderboard.py
 ```
