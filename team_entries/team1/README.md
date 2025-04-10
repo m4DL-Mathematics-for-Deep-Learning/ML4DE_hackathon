@@ -1,0 +1,18 @@
+- KS Equation: 
+	- Our data contained a single trajectory with 101 time steps and spatial dimension of 2048
+	- We removed the first 20 steps (OOD)
+	- The remaining steps were converted into 80 input-output pairs
+	- We decided to perform residual prediction instead of direct prediction
+	- The outputs were scaled by dividing by the mean value
+	- We use a UNet with a large kernel size and circular convolutions
+	- Optimization details:
+		- MSE 
+		- 1000 epochs
+		- AdamW with Cosine Schedular 1e-4 -> 1e-6 and weight decay of 1e-5
+- Lorenz:
+	- Our data contained a single trajectory with 5001 time steps
+	- We trained a simple MLP (2 hidden layers; 1024 wide) to predict the residual
+	- Optimization details:
+		- MSE
+		- 5000 epochs
+		- AdamW with Cosine Schedular 1e-4 -> 1e-7 and weight decay of 1e-5
