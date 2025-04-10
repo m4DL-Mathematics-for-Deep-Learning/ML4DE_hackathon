@@ -1,0 +1,8 @@
+For this task we used the Fourier Neural Operator model (Li et al. 2020).
+The idea is to find a map between the function at time t u(t,.) to the next step u(t+dt,.).
+The FNO does this by using a convolution operator between functions, calculated using the Fourier trick for convolutions.
+To prepare the data, one considers couples of u(t,.) (INPUT), u(t+dt,.) (OUTPUT) and, shapes them as (1,2048) (u has 1 value for 2048 points).
+We also considered using the values of the grid x for additional information, so that the input has (2,2048) shape.
+Then, we collected all the 100 couples available of IN/OUT, with the final tensor having shape (100,2,2048).
+THe model is trained.
+For testing, one can start from a state u(t,.) and roll out outputs iteratively, feeding the past output into the model. The only issue here is reshaping correctly.
