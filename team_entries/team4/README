@@ -1,0 +1,19 @@
+KS test
+
+Based on existing code from Georg Maierhofer.
+
+The idea was to treat the system as a Markov process, where the change
+in state from time n to time n+1 is dependent entirely on the state at
+time n.  Train a network to predict these differences, and apply this
+as a timestepping operator in order to calculate the prediction
+forward from the training domain.
+
+What went wrong?  It took a long while to get to a "walking skeleton"
+which we could then improve.  This meant that there wasn't sufficient
+time to address issues such as noticing that the training data appears
+to be sampled far more coarsely in time from the original CTF data.
+This meant that a wider window is needed to capture the structure
+movement in the training data.  When this is fixed, the prediction
+also isn't good, tending to saturate.  My interpretation of this is
+that it may be due to parasitic modes in the system, which there is
+nothing in the training to suppress.
