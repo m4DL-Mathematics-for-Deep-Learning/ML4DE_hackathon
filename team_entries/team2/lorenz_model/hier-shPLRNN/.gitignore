@@ -1,0 +1,5 @@
+__pycache__
+
+trained_models/**
+!trained_models/experiment/test/001/hypers.txt
+!trained_models/experiment/test/001/model_1000.pt

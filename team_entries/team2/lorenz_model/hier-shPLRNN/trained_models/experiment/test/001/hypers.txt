@@ -1,0 +1,40 @@
+data_path: ./data/ml4de/lorenz_training2.pt
+eval_data_path: ./data/ml4de/lorenz_truth2.pt
+obs_size: 3
+latent_size: 10
+obs_model: identity
+hidden_size: 50
+forcing_size: None
+seq_len: 30
+train_set_size: 5000
+hierarchisation_scheme: projection
+num_individual_params: 10
+tf_alpha_start: 0.1
+tf_alpha_end: 0.1
+num_epochs: 1000
+batch_size: 1024
+batches_per_epoch: None
+subjects_per_batch: None
+num_workers: 24
+learning_rate: (0.001, 0.001)
+individual_learning_rate: None
+weight_decay: 0
+save_path: ./trained_models
+experiment: experiment
+name: test
+run: 1
+finetune: False
+model_path: None
+checkpoint: None
+use_gpu: False
+device_id: 0
+compile: False
+metrics: ['kl', 'pse']
+kl_bins: 30
+pse_smooth: 15
+plots: ['pow', 'hier']
+lam: 0
+clip_grad_norm: 0
+clipped: False
+learn_noise_cov: False
+device: cpu
